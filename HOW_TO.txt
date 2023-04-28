@@ -1,0 +1,60 @@
+Skład zespołu: Agata Handzlik, Katarzyna Bassara, Informatyka i Ekonometria Niestacjonarne Grupa 1
+Instrukcja użycia:
+    Aplikacja zbudowana w PyCharm Community na Pythonie 3.10. By uruchomić aplikacje w terminalu należy
+wpisać streamlit run Menu.py, następnie powinna otworzyć się panu strona głowna projektu, z której można przełączyć
+na pozostałe elementy projektu.
+Opis algorytmów:
+		-Menu:
+			Import pakietu streamlit, dzięki któremu można utworzyć Strone Główną i nadać jej tytuł.
+			Dzięki elementowi Markdown umieszczamy tam gifa wraz z zezwoleniem oraz tworzymy menu z boku,
+			które pozwala przechodzić do innych elemntów strony.
+		-Kalkulator:
+			Import pakietów streamlit, który pozwala na tworzenie aplikaci webowej oraz pakietu request,
+			który pozwala tworzyc requesty  HTTP. Następnie tworzymy 2 kolumny(col1,col2), w których umieszczamy
+			za pomocą opcji selectbox z pakietu streamlit Waluty do wyboru, odpowiednio Waluta 1 w kolumnie 1 i Waluta 2
+			w kolumnie 2. Definiujemy utworzone selectboxy jako curr1,curr2. By pobrać dane tworzymy defnicje url
+			i formatujemy string przy użyciu f' i używamy api pobranego z www.currencyconverterapi.com.
+			Zmieniamy wartośc na zmienne curr1 i curr 2, co pozwala pobrać wyzęj zdefniowane waluty. Definiujemy re,
+			które pobiera podany poprzednio url i używamy formatera json, coc pozwala uzyskać dane w postaci:
+{
+  "USD_PHP": 46.211, -  wartosc 1 waluty w przeliczeniu na 2 
+  "PHP_USD": 0.02163987- wartosc 2 waluty w wprzeliczeniu na 1
+}
+			Następnie definiujemy one_two i odwrotne do niego two_one, które będą pokazywały wartości pokazane powyżej.
+			Do ich wyswietlenia ponownie używamy funkcji st.columns. Col1 wypisuje konwersję z waluty 1 do waluty 2
+			i wypisuje znalezioną wartośc przez st.streamlit. Clo2 zawiera konwersję z waluty 2 na walutę 1
+			i również pokazuje znalezioną wartość. By utworzyć właściwy kalkulator tworzymy ponownie kolumny
+			przy użyciu funkcji st.columns i w kolumnie 1 wpisujemy kwotę w walucie 1 poprzez funkcję
+			st.number_input defniujemy ją jako amount. W kolumnie 2 tworzymy funkcję, która będzie mnożyła amount przez
+			wartość waluty 1 w przeliczniu na walutę 2. Tworzyy tekst który będzie się wyswietlał i i poprzez st.success
+			wypisujemy wartośc po przemnożeniu.
+		-Prognoza Kursów Wymiany:
+				Import pakiet streamlit, z datatime moduł date, yfinance, z pakietu prophet moduł Prophet, z prophet.plot
+				moduł plot_plotly oraz z plotly moduł graph_objs. Tworzymy zmienną START, która będzie pierwszą datą
+				w naszych danych oraz zmienną TODAY, która pobiera dzisiejszą datę i przez metodę stftime,
+				konwertuje ją poprzez uzupełnianie liczby zerami wiodącymi. Nadajmey jej tytuł prz użyciu st.streamlit.
+				Definiujemy stocks, których dane będziemy chcieli pobrać. Następnie tworzymy selectbox, który pozowli
+				na wybranie jednego z nich i nazywamy go selected_stocks. Tworzymy n_slidera, którego zadaniem jest
+				wybranie okresu predykcji(jak daleko w przyszłość). Period przelicza nam ilość kat na pojedyncze dni.
+				@st.cache_data pozwala na modyfikacje funkcji, które zwracją dane. Definiujemy funkcję load_data i ticker.
+				 Tworzymy element data, który jest pobranymi przy pomocy yfinance danymi, z uzyciem tickera, START, TODAY,
+				 które określają ilośc pobranych danych.  data.reset_index(inplace=True) pozwala na umieszcze TODAY
+				 na pierwszym miejscu i ostatecznie funkcja ma nam zwracać data. Tworzymy elementy, które pokazują
+				 stan ładowania naszych danych i funkcje load_data pobierajacego wybrany w selectboxie kurs.
+				 Nadajemhy podtytuł i wypisujemy ostatnie kilka rzedów z danymi pobranymi w poprzedniej funckji.
+				 Tworzymy funcję , która stworzy nam funkcję liniową z pobranych danych. Uzywajac go.Figure tworzymy
+				 nowy obiekt. Tworzymy zmienne kurs_otwarcie i kurs_zamknięcie, których wartości są sledzone i uzywane
+				 w tworzeniu wykresu. Jako x uznajemy wartośc DATE  z pobranej tabeli,a za y wartośc 'Open' dla kurs_otwarcie
+				 i 'Close' dla kurs_zamknięcie. Dla obiektu tworzymy layout =, nadajemy w nim tytuł wykresu i pozwalamy
+				 na wyświtelania rangeslidera, który pozwala nam spojrzeć szczegółwiej na konkretne daty.Zwracamy funkcję
+				 do striny przez funkcję st.plotly_chart(fig) i wywołujemy ją w następnej linii przez przywołanie jej nazwy.
+                 Następną rzeczą będzie utworzenie predykcji. Tworzymy dataframe o nazwie df_train i pobieramy dane z
+                 kolumn 'Date','Close'. Zmieniemay ich nazwy dla uproszczenia na ds i y.
+                 Tworzymy element m, który jest funkcją Prophet.Spasowujemy dane za pomocą m.fit z danych w df_train.
+                 Jako future definiujemy nowy dataframe stworzony dla m i jako forecast uznajemy funkcję predict dla
+                 elementu m i danych z dataframe future. Tworzymy kolejny podtytuł pod którym wyświetla się ostatnie
+                 kilka linii danych wypisanych w dataframie future. Tworzymy kolejny podtytuł, i umieszcamy pod nim
+                 nowy obiekt, w którym tworzymy wykres z funkcją przewidywanych wartości. Umieszczamy go w stronie
+                 przy użyciu streamlit. Następnie kreujemy kolejny element strony, w którym wysiwetlamy obiekty
+                 składające się na wyświetloną w poprzednim wykresie predykcję.
+			
